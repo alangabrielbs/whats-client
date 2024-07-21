@@ -95,7 +95,7 @@ export const Sidebar = () => {
   const isActive = false;
 
   return (
-    <aside className="border-r h-full mr-4 w-full">
+    <aside className="border-r h-full w-full">
       <header className="flex items-center justify-between p-4 border-b">
         <Image src="/logo.svg" alt="Logo" width={150} height={28} />
 
