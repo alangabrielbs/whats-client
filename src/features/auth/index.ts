@@ -15,7 +15,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Senha", type: "password" },
       },
       async authorize(credentials, req) {
-        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
+        const user = {
+          id: "1",
+          name: "Alan Gabriel",
+          email: "contato@alangabriel.dev",
+        };
 
         if (user) {
           return user;

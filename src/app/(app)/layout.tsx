@@ -1,4 +1,5 @@
 import { protectServer } from "@/features/auth/utils";
+import { DashboardLayout } from "@/features/dashboard/components/layout";
 
 export default async function DashboarRootLayout({
   children,
@@ -7,5 +8,5 @@ export default async function DashboarRootLayout({
 }) {
   await protectServer();
 
-  return children;
+  return <DashboardLayout>{children}</DashboardLayout>;
 }
