@@ -13,12 +13,19 @@ import { useExpandedSidebar } from "@/features/dashboard/hooks/use-expanded-side
 import { CreditCard, EllipsisVertical, LogOut, Settings } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
 export const UserDropdown = () => {
   const { isExpanded } = useExpandedSidebar();
+  const [query, setQuery] = useState("");
 
   const { data: session } = useSession();
+
+  useEffect(() => {
+    const search = window.location.search;
+    setQuery(search);
+  }, []);
 
   return (
     <DropdownMenu>
@@ -66,14 +73,17 @@ export const UserDropdown = () => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem>
-          <Link href="/" className="flex items-center">
+          <Link href={`/configuracoes${query}`} className="flex items-center">
             <Settings className="h-4 w-4 mr-2" />
             Configurações
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem>
-          <Link href="/" className="flex items-center">
+          <Link
+            href={`/configuracoes/assinatura${query}`}
+            className="flex items-center"
+          >
             <CreditCard className="h-4 w-4 mr-2" />
             Assinatura
           </Link>
