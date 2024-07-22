@@ -1,7 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { UserDropdown } from "@/components/user-dropdown";
+"use client";
+
 import {
   ArrowLeftRight,
   BookCopy,
@@ -11,13 +9,21 @@ import {
   MessageSquareDot,
   MessageSquareShare,
   MessagesSquare,
+  PanelRightOpen,
   Settings,
-  SidebarIcon,
   Tags,
   Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+import { Hint } from "@/components/hint";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { UserDropdown } from "@/components/user-dropdown";
+import { cn } from "@/lib/utils";
+import { useExpandedSidebar } from "../hooks/use-expanded-sidebar";
 
 const menuItems = [
   {
@@ -78,12 +84,12 @@ const menuItems = [
     title: "Ajuda",
     items: [
       {
-        title: "Central de ajuta",
+        title: "Central de Ajuda",
         icon: LifeBuoy,
         link: "/central-de-ajuda",
       },
       {
-        title: "Falar com suporte",
+        title: "Falar com Suporte",
         icon: MessagesSquare,
         link: "/usuarios",
       },
@@ -92,16 +98,34 @@ const menuItems = [
 ];
 
 export const Sidebar = () => {
-  const isActive = false;
+  const { isExpanded, toggleSidebar } = useExpandedSidebar();
+
+  const logoUrl = isExpanded ? "/logo.svg" : "/icon.svg";
 
   return (
-    <aside className="border-r h-full w-full">
-      <header className="flex items-center justify-between p-4 border-b">
-        <Image src="/logo.svg" alt="Logo" width={150} height={28} />
+    <aside className="border-r h-full">
+      <header
+        className={cn("flex items-center justify-between p-4 border-b", {
+          "flex-col gap-y-2 h-[73px] justify-center": !isExpanded,
+        })}
+      >
+        <Image
+          src={logoUrl}
+          alt="Logo"
+          {...(isExpanded
+            ? { width: 150, height: 28 }
+            : { width: 32, height: 19 })}
+        />
 
-        <Button variant="ghost" size="icon">
-          <SidebarIcon className="size-4 text-muted-foreground" />
-        </Button>
+        {isExpanded && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => toggleSidebar((isOpen) => !isOpen)}
+          >
+            <PanelRightOpen className="size-4 text-slate-400" />
+          </Button>
+        )}
       </header>
 
       <ScrollArea className="h-[calc(100%-146px)]">
@@ -110,27 +134,45 @@ export const Sidebar = () => {
             <ul key={index} className="flex flex-col">
               {title && (
                 <>
-                  <Separator className="-ml-2 w-[calc(100%+16px)] mt-2" />
-                  <small className="ml-2 text-muted-foreground text-xs mt-4 mb-3">
-                    {title}
-                  </small>
+                  <Separator
+                    className={cn("-ml-2 w-[calc(100%+16px)] mt-2", {
+                      "mb-2": !isExpanded,
+                    })}
+                  />
+                  {isExpanded && (
+                    <small className="ml-2 text-muted-foreground text-xs mt-4 mb-3">
+                      {title}
+                    </small>
+                  )}
                 </>
               )}
 
               {items.map(({ title, icon: Icon, link }) => (
                 <li key={title}>
-                  <Button
-                    variant="ghost"
-                    className="w-full rounded-lg justify-start font-medium text-slate-600 p-0"
+                  <Hint
+                    label={title}
+                    side="right"
+                    sideOffset={5}
+                    disabled={isExpanded}
                   >
-                    <Link
-                      href={link}
-                      className="flex items-center gap-x-2 w-full px-4 py-2"
+                    <Button
+                      variant="ghost"
+                      className={cn(
+                        "w-full rounded-lg justify-start font-medium text-slate-600 p-0",
+                        {
+                          "w-min": !isExpanded,
+                        }
+                      )}
                     >
-                      {Icon && <Icon className="size-4" />}
-                      <span>{title}</span>
-                    </Link>
-                  </Button>
+                      <Link
+                        href={link}
+                        className="flex items-center gap-x-2 w-full px-4 py-2"
+                      >
+                        {Icon && <Icon className="size-4" />}
+                        {isExpanded && <span>{title}</span>}
+                      </Link>
+                    </Button>
+                  </Hint>
                 </li>
               ))}
             </ul>
