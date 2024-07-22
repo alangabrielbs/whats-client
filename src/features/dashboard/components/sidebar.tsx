@@ -24,7 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { UserDropdown } from "@/components/user-dropdown";
 import { useExpandedSidebar } from "@/features/dashboard/hooks/use-expanded-sidebar";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 const menuItems = [
   {
@@ -100,14 +100,11 @@ const menuItems = [
 
 export const Sidebar = () => {
   const { isExpanded, toggleSidebar } = useExpandedSidebar();
-  const [query, setQuery] = useState("");
+
+  const search = useSearchParams();
+  const query = search ? `?${search.toString()}` : "";
 
   const logoUrl = isExpanded ? "/logo.svg" : "/icon.svg";
-
-  useEffect(() => {
-    const search = window.location.search;
-    setQuery(search);
-  }, []);
 
   return (
     <aside className="border-r h-full">
