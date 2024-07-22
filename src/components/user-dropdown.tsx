@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -7,19 +9,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { auth } from "@/features/auth";
-import {
-  CreditCard,
-  EllipsisVertical,
-  Home,
-  LogOut,
-  Settings,
-} from "lucide-react";
+import { useExpandedSidebar } from "@/features/dashboard/hooks/use-expanded-sidebar";
+import { CreditCard, EllipsisVertical, LogOut, Settings } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
-export const UserDropdown = async () => {
-  const session = await auth();
+export const UserDropdown = () => {
+  const { isExpanded } = useExpandedSidebar();
+
+  const { data: session } = useSession();
 
   return (
     <DropdownMenu>
@@ -31,25 +30,28 @@ export const UserDropdown = async () => {
               <AvatarFallback>AG</AvatarFallback>
             </Avatar>
 
-            <div className="flex flex-col items-start space-y-1">
-              <p className="text-sm font-medium leading-none">
-                {session?.user?.name}
-              </p>
-              <p className="text-xs font-normal leading-none text-muted-foreground">
-                {session?.user?.email}
-              </p>
-            </div>
+            {isExpanded && (
+              <div className="flex flex-col items-start space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {session?.user?.name}
+                </p>
+                <p className="text-xs font-normal leading-none text-muted-foreground">
+                  {session?.user?.email}
+                </p>
+              </div>
+            )}
           </div>
-
-          <Button variant="ghost" size="icon" className="ml-auto" asChild>
-            <div>
-              <EllipsisVertical className="h-4 w-4" />
-            </div>
-          </Button>
+          {isExpanded && (
+            <Button variant="ghost" size="icon" className="ml-auto" asChild>
+              <div>
+                <EllipsisVertical className="h-4 w-4" />
+              </div>
+            </Button>
+          )}
         </div>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-72">
+      <DropdownMenuContent className="w-60">
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-semibold leading-none">

@@ -22,15 +22,16 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { PageHeader } from "@/features/dashboard/components/page-header";
 
 export default function DashboardPage() {
   return (
     <div className="h-full">
-      <header className="h-[73px] border-b mb-4 p-4 flex items-center ">
+      <PageHeader>
         <h4 className="scroll-m-20 text-xl font-medium tracking-tight text-slate-800">
           Visão Geral
         </h4>
-      </header>
+      </PageHeader>
 
       <main className="px-4">
         <Card className="lg:max-w-md" x-chunk="charts-01-chunk-0">
