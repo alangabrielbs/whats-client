@@ -22,8 +22,9 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { UserDropdown } from "@/components/user-dropdown";
+import { useExpandedSidebar } from "@/features/dashboard/hooks/use-expanded-sidebar";
 import { cn } from "@/lib/utils";
-import { useExpandedSidebar } from "../hooks/use-expanded-sidebar";
+import { useEffect, useState } from "react";
 
 const menuItems = [
   {
@@ -99,8 +100,14 @@ const menuItems = [
 
 export const Sidebar = () => {
   const { isExpanded, toggleSidebar } = useExpandedSidebar();
+  const [query, setQuery] = useState("");
 
   const logoUrl = isExpanded ? "/logo.svg" : "/icon.svg";
+
+  useEffect(() => {
+    const search = window.location.search;
+    setQuery(search);
+  }, []);
 
   return (
     <aside className="border-r h-full">
@@ -165,7 +172,7 @@ export const Sidebar = () => {
                       )}
                     >
                       <Link
-                        href={link}
+                        href={`${link}${query}`}
                         className="flex items-center gap-x-2 w-full px-4 py-2"
                       >
                         {Icon && <Icon className="size-4" />}

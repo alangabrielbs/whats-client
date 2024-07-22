@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { PanelRightClose } from "lucide-react";
-import { useExpandedSidebar } from "../hooks/use-expanded-sidebar";
+
+import { Button } from "@/components/ui/button";
+import { useExpandedSidebar } from "@/features/dashboard/hooks/use-expanded-sidebar";
+import { cn } from "@/lib/utils";
 
 type PageHeaderProps = {
   children: React.ReactNode;

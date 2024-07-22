@@ -1,9 +1,10 @@
 "use client";
 
-import { Sidebar } from "@/features/dashboard/components/sidebar";
-import { cn } from "@/lib/utils";
 import { SessionProvider } from "next-auth/react";
-import { useExpandedSidebar } from "../hooks/use-expanded-sidebar";
+
+import { Sidebar } from "@/features/dashboard/components/sidebar";
+import { useExpandedSidebar } from "@/features/dashboard/hooks/use-expanded-sidebar";
+import { cn } from "@/lib/utils";
 
 export const DashboardLayout = ({
   children,
